@@ -22,6 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\TournamentLadder.Core\TournamentLadder.Core.csproj" />
       <ProjectReference Include="..\TournamentLadder.Infrastructure\TournamentLadder.Infrastructure.csproj" />
     </ItemGroup>
 
