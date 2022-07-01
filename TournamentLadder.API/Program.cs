@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TournamentLadder.Core.Service.Game;
+using TournamentLadder.Core.Service.Tournament;
 using TournamentLadder.Infrastructure.Context;
 using TournamentLadder.Infrastructure.Repositories;
 
@@ -17,8 +18,10 @@ builder.Services.AddDbContext<MainContext>(options =>
     )
 );
 
- builder.Services.AddScoped<IGameRepository, GameRepository>();
- builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
+builder.Services.AddScoped<ITournamentService, TournamentService>();
 
 var app = builder.Build();
 
