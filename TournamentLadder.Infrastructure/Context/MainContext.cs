@@ -23,5 +23,6 @@ public class MainContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        
     }
 }
