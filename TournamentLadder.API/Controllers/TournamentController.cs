@@ -36,14 +36,14 @@ public class TournamentController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("GetAll")]
+    [HttpPost("UpdateTournament")]
     public async Task<IActionResult> UpdateTournament([FromBody] TournamentResponseDto tournament)
     {
         await _tournamentService.UpdateTournament(tournament);
         return NoContent();
     }
 
-    [HttpGet("GetAll")]
+    [HttpGet("GetAllActiveTournaments")]
     public async Task<IActionResult> GetAllActiveTournaments([FromBody] TournamentResponseDto tournament)
     {
         return Ok(await _tournamentService.GetAllTournaments());
