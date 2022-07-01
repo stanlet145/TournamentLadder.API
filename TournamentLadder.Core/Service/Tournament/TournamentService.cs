@@ -10,14 +10,11 @@ public class TournamentService : ITournamentService
 {
     private readonly ITournamentRepository _tournamentRepository;
     private readonly IGameMapper _gameMapper;
-    private readonly ILadderRepository _ladderRepository;
 
-    public TournamentService(ITournamentRepository tournamentRepository, IGameMapper gameMapper,
-        ILadderRepository ladderRepository)
+    public TournamentService(ITournamentRepository tournamentRepository, IGameMapper gameMapper)
     {
         _tournamentRepository = tournamentRepository;
         _gameMapper = gameMapper;
-        _ladderRepository = ladderRepository;
     }
 
     public async Task<IEnumerable<TournamentResponseDto>> GetAllTournaments()
@@ -43,9 +40,9 @@ public class TournamentService : ITournamentService
         throw new NotImplementedException();
     }
 
-    public Task DeleteTournamentById(int id)
+    public async Task DeleteTournamentById(int id)
     {
-        throw new NotImplementedException();
+        await _tournamentRepository.DeleteById(id);
     }
 
     private Infrastructure.Entities.Tournament BuildTournament(TournamentResponseDto dto)
