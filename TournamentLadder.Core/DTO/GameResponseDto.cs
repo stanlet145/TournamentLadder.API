@@ -4,10 +4,10 @@ namespace TournamentLadder.Core.DTO;
 
 public class GameResponseDto
 {
-    public Dictionary<Team, int> TeamScores { get; set; }
+    public Dictionary<string, int> TeamNameScoreDictionary { get; set; }
 
-    public GameResponseDto(Dictionary<Team, int> teamScores)
+    public GameResponseDto(Dictionary<string, int> teamNameScoreDictionary)
     {
-        TeamScores = teamScores;
+        TeamNameScoreDictionary = teamNameScoreDictionary;
     }
 }
