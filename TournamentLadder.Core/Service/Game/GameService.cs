@@ -13,14 +13,14 @@ public class GameService : IGameService
         _gameRepository = gameRepository;
     }
 
-    public async Task<IEnumerable<GameResponseDto>> GetAllGames()
+    public async Task<IEnumerable<GameDto>> GetAllGames()
     {
         var games = await _gameRepository.GetAll();
         return games.Select(
-            x => new GameResponseDto(JsonConvert.DeserializeObject<Dictionary<string, int>>(x.TeamScores)));
+            x => new GameDto(JsonConvert.DeserializeObject<Dictionary<string, int>>(x.TeamScores)));
     }
 
-    public async Task AddNewGame(GameResponseDto dto)
+    public async Task AddNewGame(GameDto dto)
     {
         await _gameRepository.Add(BuildGame(dto.TeamNameScoreDictionary));
     }

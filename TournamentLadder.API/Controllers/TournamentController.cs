@@ -28,4 +28,24 @@ public class TournamentController : ControllerBase
     {
         return Ok(await _tournamentService.GetAllTournaments());
     }
+
+    [HttpDelete("DeleteTournamentById")]
+    public async Task<IActionResult> DeleteTournamentById([FromQuery(Name = "id")] int id)
+    {
+        await _tournamentService.DeleteTournamentById(id);
+        return NoContent();
+    }
+
+    [HttpPost("GetAll")]
+    public async Task<IActionResult> UpdateTournament([FromBody] TournamentResponseDto tournament)
+    {
+        await _tournamentService.UpdateTournament(tournament);
+        return NoContent();
+    }
+
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAllActiveTournaments([FromBody] TournamentResponseDto tournament)
+    {
+        return Ok(await _tournamentService.GetAllTournaments());
+    }
 }

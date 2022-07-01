@@ -1,4 +1,7 @@
 using TournamentLadder.Core.DTO;
+using TournamentLadder.Core.Service.Game;
+using TournamentLadder.Core.Service.Mapper;
+using TournamentLadder.Infrastructure.Entities;
 using TournamentLadder.Infrastructure.Repositories;
 
 namespace TournamentLadder.Core.Service.Tournament;
@@ -6,18 +9,23 @@ namespace TournamentLadder.Core.Service.Tournament;
 public class TournamentService : ITournamentService
 {
     private readonly ITournamentRepository _tournamentRepository;
+    private readonly IGameMapper _gameMapper;
+    private readonly ILadderRepository _ladderRepository;
 
-    public TournamentService(ITournamentRepository tournamentRepository)
+    public TournamentService(ITournamentRepository tournamentRepository, IGameMapper gameMapper,
+        ILadderRepository ladderRepository)
     {
         _tournamentRepository = tournamentRepository;
+        _gameMapper = gameMapper;
+        _ladderRepository = ladderRepository;
     }
-    
+
     public async Task<IEnumerable<TournamentResponseDto>> GetAllTournaments()
     {
         var games = await _tournamentRepository.GetAll();
         return games.Select(
             x => new TournamentResponseDto(
-                x.TournamentName, x.TournamentStart, x.TournamentEnd, x.TournamentTeams, x.Ladder));
+                x.TournamentName, x.TournamentStart, x.TournamentEnd, x.TournamentTeams, Map(x.Ladder)));
     }
 
     public Task<IEnumerable<TournamentResponseDto>> GetAllActiveTournaments()
@@ -40,7 +48,7 @@ public class TournamentService : ITournamentService
         throw new NotImplementedException();
     }
 
-    private static Infrastructure.Entities.Tournament BuildTournament(TournamentResponseDto dto)
+    private Infrastructure.Entities.Tournament BuildTournament(TournamentResponseDto dto)
     {
         return new Infrastructure.Entities.Tournament()
         {
@@ -48,7 +56,35 @@ public class TournamentService : ITournamentService
             TournamentStart = dto.TournamentStart,
             TournamentEnd = dto.TournamentEnd,
             TournamentTeams = dto.TournamentTeams,
-            Ladder = dto.Ladder
+            Ladder = Map(dto.Ladder)
         };
+    }
+
+    private Ladder Map(LadderDto ladderDto)
+    {
+        var entity = new Ladder()
+        {
+            Games = MapGames(ladderDto.GameDtos)
+        };
+        return entity;
+    }
+
+    private List<Infrastructure.Entities.Game> MapGames(IEnumerable<GameDto> gameDtos)
+    {
+        return gameDtos.Select(gameDto => _gameMapper.SerializeGame(gameDto)).ToList();
+    }
+
+    private LadderDto Map(Ladder entity)
+    {
+        var dto = new LadderDto
+        {
+            GameDtos = MapGames(entity.Games)
+        };
+        return dto;
+    }
+
+    private List<GameDto> MapGames(IEnumerable<Infrastructure.Entities.Game> games)
+    {
+        return games.Select(entity => _gameMapper.DeserializeGame(entity)).ToList();
     }
 }

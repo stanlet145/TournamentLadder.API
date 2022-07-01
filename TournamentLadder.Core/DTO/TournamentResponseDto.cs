@@ -8,9 +8,9 @@ public class TournamentResponseDto
     public DateTime TournamentStart { get; set; }
     public DateTime TournamentEnd { get; set; }
     public List<Team> TournamentTeams { get; set; }
-    public Ladder Ladder { get; set; }
+    public LadderDto Ladder { get; set; }
 
-    public TournamentResponseDto(string tournamentName, DateTime tournamentStart, DateTime tournamentEnd, List<Team> tournamentTeams, Ladder ladder)
+    public TournamentResponseDto(string tournamentName, DateTime tournamentStart, DateTime tournamentEnd, List<Team> tournamentTeams, LadderDto ladder)
     {
         TournamentName = tournamentName;
         TournamentStart = tournamentStart;
