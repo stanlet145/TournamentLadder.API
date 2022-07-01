@@ -4,6 +4,8 @@ using TournamentLadder.Core.Service.Tournament;
 
 namespace TournamentLadder.API.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class TournamentController : ControllerBase
 {
     private readonly ITournamentService _tournamentService;
