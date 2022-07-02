@@ -7,7 +7,7 @@ using TournamentLadder.Infrastructure.Context;
 
 #nullable disable
 
-namespace TournamentLadder.Infrastructure.Migrations
+namespace TournamentManager.Infrastructure.Migrations
 {
     [DbContext(typeof(MainContext))]
     partial class MainContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace TournamentLadder.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
 
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Game", b =>
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,7 +29,7 @@ namespace TournamentLadder.Infrastructure.Migrations
                     b.Property<DateTime>("DateOfUpdate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("LadderId")
+                    b.Property<int>("LadderId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("TeamScores")
@@ -43,7 +43,7 @@ namespace TournamentLadder.Infrastructure.Migrations
                     b.ToTable("Game");
                 });
 
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Ladder", b =>
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Ladder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,12 +55,15 @@ namespace TournamentLadder.Infrastructure.Migrations
                     b.Property<DateTime>("DateOfUpdate")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("TournamentId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.ToTable("Ladder");
                 });
 
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Member", b =>
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Member", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -97,7 +100,7 @@ namespace TournamentLadder.Infrastructure.Migrations
                     b.ToTable("Member");
                 });
 
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Team", b =>
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Team", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,7 +126,7 @@ namespace TournamentLadder.Infrastructure.Migrations
                     b.ToTable("Team");
                 });
 
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Tournament", b =>
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Tournament", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -150,36 +153,16 @@ namespace TournamentLadder.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LadderId");
+                    b.HasIndex("LadderId")
+                        .IsUnique();
 
                     b.ToTable("Tournament");
                 });
 
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Game", b =>
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Game", b =>
                 {
-                    b.HasOne("TournamentLadder.Infrastructure.Entities.Ladder", null)
+                    b.HasOne("TournamentManager.Infrastructure.Entities.Ladder", "Ladder")
                         .WithMany("Games")
-                        .HasForeignKey("LadderId");
-                });
-
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Member", b =>
-                {
-                    b.HasOne("TournamentLadder.Infrastructure.Entities.Team", null)
-                        .WithMany("Members")
-                        .HasForeignKey("TeamId");
-                });
-
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Team", b =>
-                {
-                    b.HasOne("TournamentLadder.Infrastructure.Entities.Tournament", null)
-                        .WithMany("TournamentTeams")
-                        .HasForeignKey("TournamentId");
-                });
-
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Tournament", b =>
-                {
-                    b.HasOne("TournamentLadder.Infrastructure.Entities.Ladder", "Ladder")
-                        .WithMany()
                         .HasForeignKey("LadderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -187,17 +170,51 @@ namespace TournamentLadder.Infrastructure.Migrations
                     b.Navigation("Ladder");
                 });
 
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Ladder", b =>
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Member", b =>
                 {
-                    b.Navigation("Games");
+                    b.HasOne("TournamentManager.Infrastructure.Entities.Team", "Team")
+                        .WithMany("Members")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Team", b =>
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Team", b =>
+                {
+                    b.HasOne("TournamentManager.Infrastructure.Entities.Tournament", "Tournament")
+                        .WithMany("TournamentTeams")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Tournament");
+                });
+
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Tournament", b =>
+                {
+                    b.HasOne("TournamentManager.Infrastructure.Entities.Ladder", "Ladder")
+                        .WithOne("Tournament")
+                        .HasForeignKey("TournamentManager.Infrastructure.Entities.Tournament", "LadderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ladder");
+                });
+
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Ladder", b =>
+                {
+                    b.Navigation("Games");
+
+                    b.Navigation("Tournament")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Team", b =>
                 {
                     b.Navigation("Members");
                 });
 
-            modelBuilder.Entity("TournamentLadder.Infrastructure.Entities.Tournament", b =>
+            modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Tournament", b =>
                 {
                     b.Navigation("TournamentTeams");
                 });

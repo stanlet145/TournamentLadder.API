@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TournamentLadder.Infrastructure.Migrations
+namespace TournamentManager.Infrastructure.Migrations
 {
     public partial class initial : Migration
     {
@@ -15,6 +15,7 @@ namespace TournamentLadder.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    TournamentId = table.Column<int>(type: "INTEGER", nullable: false),
                     DateOfCreation = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DateOfUpdate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -30,7 +31,7 @@ namespace TournamentLadder.Infrastructure.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     TeamScores = table.Column<string>(type: "TEXT", nullable: false),
-                    LadderId = table.Column<int>(type: "INTEGER", nullable: true),
+                    LadderId = table.Column<int>(type: "INTEGER", nullable: false),
                     DateOfCreation = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DateOfUpdate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -41,7 +42,8 @@ namespace TournamentLadder.Infrastructure.Migrations
                         name: "FK_Game_Ladder_LadderId",
                         column: x => x.LadderId,
                         principalTable: "Ladder",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,7 +88,8 @@ namespace TournamentLadder.Infrastructure.Migrations
                         name: "FK_Team_Tournament_TournamentId",
                         column: x => x.TournamentId,
                         principalTable: "Tournament",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,7 +113,8 @@ namespace TournamentLadder.Infrastructure.Migrations
                         name: "FK_Member_Team_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Team",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -131,7 +135,8 @@ namespace TournamentLadder.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Tournament_LadderId",
                 table: "Tournament",
-                column: "LadderId");
+                column: "LadderId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
