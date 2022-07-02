@@ -1,5 +1,6 @@
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TournamentLadder.Infrastructure.Context;
 using TournamentLadder.Infrastructure.Entities;
 using TournamentLadder.Infrastructure.Exceptions;
@@ -9,10 +10,12 @@ namespace TournamentLadder.Infrastructure.Repositories;
 public class TournamentRepository : ITournamentRepository
 {
     private readonly MainContext _mainContext;
+    private readonly ILogger<TournamentRepository> _logger;
 
-    public TournamentRepository(MainContext mainContext)
+    public TournamentRepository(MainContext mainContext, ILogger<TournamentRepository> logger)
     {
         _mainContext = mainContext;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<Tournament>> GetAll()
@@ -48,6 +51,7 @@ public class TournamentRepository : ITournamentRepository
             tournamentToUpdate.TournamentTeams = entity.TournamentTeams;
             tournamentToUpdate.TournamentStart = entity.TournamentEnd;
             tournamentToUpdate.TournamentEnd = entity.TournamentEnd;
+            tournamentToUpdate.DateOfUpdate = DateTime.UtcNow;
             await _mainContext.SaveChangesAsync();
         }
         else
@@ -74,7 +78,7 @@ public class TournamentRepository : ITournamentRepository
     {
         var now = DateTime.UtcNow;
         var nowDate = new SqlParameter("nowDate", now);
-        Task<List<Tournament>>? tournaments;
+        Task<List<Tournament>> tournaments;
         try
         {
             tournaments = _mainContext.Tournament
@@ -83,8 +87,9 @@ public class TournamentRepository : ITournamentRepository
                     nowDate)
                 .ToListAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            _logger.LogError("Failed executing query for GetAllActiveTournaments : {}", e.Message);
             throw new EntityNotFoundException();
         }
 
