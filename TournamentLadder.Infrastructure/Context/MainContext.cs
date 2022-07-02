@@ -40,6 +40,11 @@ public class MainContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Ladder>()
+            .HasOne(x => x.Tournament)
+            .WithOne(x => x.Ladder)
+            .HasForeignKey<Ladder>(x => x.TournamentId);
+
+        modelBuilder.Entity<Ladder>()
             .HasMany(x => x.Games)
             .WithOne(x => x.Ladder)
             .OnDelete(DeleteBehavior.Cascade);
