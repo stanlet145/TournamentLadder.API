@@ -3,5 +3,7 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::F0C2DF2C-74CB-4EF6-B10C-0A0796D48862::net6.0::TournamentLadder.Tests.Tests.TournamentServiceTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::F0C2DF2C-74CB-4EF6-B10C-0A0796D48862::net6.0::TournamentLadder.Tests.Tests.GameMapperTest.T&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::F0C2DF2C-74CB-4EF6-B10C-0A0796D48862::net6.0::TournamentLadder.Tests.Tests.GameMapperTest.Deserialize_ShouldReturnGameDto&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::F0C2DF2C-74CB-4EF6-B10C-0A0796D48862::net6.0::TournamentLadder.Tests.Tests.GameMapperTest.Serialize_ShouldReturnGame&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
