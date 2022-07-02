@@ -1,5 +1,4 @@
 using TournamentLadder.Core.DTO;
-using TournamentLadder.Core.Service.Game;
 using TournamentLadder.Core.Service.Mapper;
 using TournamentLadder.Infrastructure.Entities;
 using TournamentLadder.Infrastructure.Repositories;
@@ -19,15 +18,14 @@ public class TournamentService : ITournamentService
 
     public async Task<IEnumerable<TournamentResponseDto>> GetAllTournaments()
     {
-        var games = await _tournamentRepository.GetAll();
-        return games.Select(
-            x => new TournamentResponseDto(
-                x.TournamentName, x.TournamentStart, x.TournamentEnd, x.TournamentTeams, Map(x.Ladder)));
+        var tournaments = await _tournamentRepository.GetAll();
+        return tournaments.Select(BuildTournamentDto);
     }
 
-    public Task<IEnumerable<TournamentResponseDto>> GetAllActiveTournaments()
+    public async Task<IEnumerable<TournamentResponseDto>> GetAllActiveTournaments()
     {
-        throw new NotImplementedException();
+        var tournaments =  await _tournamentRepository.GetAllActiveTournaments();
+        return tournaments.Select(BuildTournamentDto);
     }
 
     public async Task AddNewTournament(TournamentResponseDto dto)
@@ -35,14 +33,20 @@ public class TournamentService : ITournamentService
         await _tournamentRepository.Add(BuildTournament(dto));
     }
 
-    public Task UpdateTournament(TournamentResponseDto dto)
+    public async Task UpdateTournament(TournamentResponseDto dto)
     {
-        throw new NotImplementedException();
+        await _tournamentRepository.Update(BuildTournament(dto));
     }
 
     public async Task DeleteTournamentById(int id)
     {
         await _tournamentRepository.DeleteById(id);
+    }
+
+    private TournamentResponseDto BuildTournamentDto(Infrastructure.Entities.Tournament tournament)
+    {
+        return new TournamentResponseDto(tournament.TournamentName, tournament.TournamentStart,
+            tournament.TournamentEnd, tournament.TournamentTeams, Map(tournament.Ladder));
     }
 
     private Infrastructure.Entities.Tournament BuildTournament(TournamentResponseDto dto)

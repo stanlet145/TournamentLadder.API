@@ -1,3 +1,4 @@
+using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TournamentLadder.Infrastructure.Context;
 using TournamentLadder.Infrastructure.Entities;
@@ -7,13 +8,13 @@ namespace TournamentLadder.Infrastructure.Repositories;
 
 public class TournamentRepository : ITournamentRepository
 {
-    
     private readonly MainContext _mainContext;
 
     public TournamentRepository(MainContext mainContext)
     {
         _mainContext = mainContext;
     }
+
     public async Task<IEnumerable<Tournament>> GetAll()
     {
         return await _mainContext.Tournament.ToListAsync();
@@ -67,5 +68,26 @@ public class TournamentRepository : ITournamentRepository
         {
             throw new EntityNotFoundException();
         }
+    }
+
+    public Task<List<Tournament>> GetAllActiveTournaments()
+    {
+        var now = DateTime.UtcNow;
+        var nowDate = new SqlParameter("nowDate", now);
+        Task<List<Tournament>>? tournaments;
+        try
+        {
+            tournaments = _mainContext.Tournament
+                .FromSqlRaw(
+                    "SELECT * FROM Tournament t  WHERE t.TournamentStart < @nowDate AND t.TournamentEnd > @nowDate",
+                    nowDate)
+                .ToListAsync();
+        }
+        catch (Exception)
+        {
+            throw new EntityNotFoundException();
+        }
+
+        return tournaments;
     }
 }

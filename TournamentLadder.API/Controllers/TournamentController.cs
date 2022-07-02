@@ -46,6 +46,6 @@ public class TournamentController : ControllerBase
     [HttpGet("GetAllActiveTournaments")]
     public async Task<IActionResult> GetAllActiveTournaments([FromBody] TournamentResponseDto tournament)
     {
-        return Ok(await _tournamentService.GetAllTournaments());
+        return Ok(await _tournamentService.GetAllActiveTournaments());
     }
 }
