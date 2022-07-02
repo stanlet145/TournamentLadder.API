@@ -10,7 +10,7 @@ namespace TournamentLadder.Tests.Tests;
 public class TournamentServiceTest
 {
     [Fact]
-    public async Task GetT()
+    public async Task GetAllActiveTournaments_ShouldReturnListOfActiveTournaments()
     {
         var tournaments = new List<Tournament>()
         {
@@ -50,12 +50,9 @@ public class TournamentServiceTest
                         new()
                         {
                             TeamScores = @"{
-                            'teamNameScoreDictionary': {
-                            'additionalProp1': 0,
-                            'additionalProp2': 0,
-                            'additionalProp3': 0
-                                 }
-                             }"
+                           'TeamOne': 2,
+                            'TeamTwo': 1
+                            }"
                         }
                     }
                 }
