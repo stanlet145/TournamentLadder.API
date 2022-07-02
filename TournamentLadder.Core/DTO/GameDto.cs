@@ -2,11 +2,11 @@ using TournamentLadder.Infrastructure.Entities;
 
 namespace TournamentLadder.Core.DTO;
 
-public class GameResponseDto
+public class GameDto
 {
     public Dictionary<string, int> TeamNameScoreDictionary { get; set; }
 
-    public GameResponseDto(Dictionary<string, int> teamNameScoreDictionary)
+    public GameDto(Dictionary<string, int> teamNameScoreDictionary)
     {
         TeamNameScoreDictionary = teamNameScoreDictionary;
     }

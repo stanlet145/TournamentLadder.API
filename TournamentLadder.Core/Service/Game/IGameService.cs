@@ -4,8 +4,8 @@ namespace TournamentLadder.Core.Service.Game;
 
 public interface IGameService
 {
-    Task<IEnumerable<GameResponseDto>> GetAllGames();
+    Task<IEnumerable<GameDto>> GetAllGames();
     
-    Task AddNewGame(GameResponseDto dto);
+    Task AddNewGame(GameDto dto);
     
 }

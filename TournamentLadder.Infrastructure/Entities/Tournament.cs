@@ -6,5 +6,6 @@ public class Tournament : BaseEntity
     public DateTime TournamentStart { get; set; }
     public DateTime TournamentEnd { get; set; }
     public List<Team> TournamentTeams { get; set; }
+    public int LadderId { get; set; }
     public Ladder Ladder { get; set; }
 }

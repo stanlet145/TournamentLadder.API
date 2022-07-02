@@ -1,8 +1,9 @@
-namespace TournamentLadder.Infrastructure.Entities;
+using TournamentLadder.Infrastructure.Entities;
 
-public class Member : BaseEntity
+namespace TournamentLadder.Core.DTO;
+
+public class MemberDto
 {
-    public Team Team;
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Nickname { get; set; }

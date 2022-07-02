@@ -16,9 +16,9 @@ public class GameController : ControllerBase
     }
 
     [HttpPost("Create")]
-    public async Task<IActionResult> CreateNewGame([FromBody] GameResponseDto gameResponseDto)
+    public async Task<IActionResult> CreateNewGame([FromBody] GameDto gameDto)
     {
-        await _gameService.AddNewGame(gameResponseDto);
+        await _gameService.AddNewGame(gameDto);
         return NoContent();
     }
 
